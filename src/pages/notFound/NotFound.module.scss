@@ -1,0 +1,14 @@
+.notFound {
+  text-align: center;
+  padding: 80px;
+
+  &__title {
+    font-size: 64px;
+    color: red;
+  }
+  &__text {
+    font-size: 32px;
+  }
+  &__homelink {
+  }
+}

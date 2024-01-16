@@ -3,7 +3,6 @@ import { icons, BaseIconProps } from './config';
 const BaseIcon = ({ width, height, iconName, color, className = '' }: BaseIconProps) => {
   const cx = `${className} ${color ? color : ''}`;
 
-  console.log(cx);
   return (
     <svg
       className={cx}

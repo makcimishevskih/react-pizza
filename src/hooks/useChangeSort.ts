@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 
-export type SortT = 'asc' | 'desc';
+export type OrderT = 'asc' | 'desc';
 
 const useChangeSort = () => {
-  const [sortType, setSortType] = useState<SortT>('asc');
+  const [orderType, setOrderType] = useState<OrderT>('asc');
   const [sortIndex, setSortIndex] = useState(0);
 
   const handleToggleSort = useCallback(() => {
-    setSortType((sort) => (sort === 'asc' ? 'desc' : 'asc'));
+    setOrderType((sort) => (sort === 'asc' ? 'desc' : 'asc'));
   }, []);
 
   const handleSortName = useCallback((index: number) => {
@@ -15,7 +15,7 @@ const useChangeSort = () => {
   }, []);
 
   return {
-    sortType,
+    orderType,
     sortIndex,
     handleSortName,
     handleToggleSort,

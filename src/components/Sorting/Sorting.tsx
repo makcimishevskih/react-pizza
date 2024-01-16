@@ -1,17 +1,15 @@
 import { useMemo, useState } from 'react';
-
-import { sorts } from '../config';
-
 import useToggle from '../../hooks/useToggle';
 
 import BaseIcon from '../../shared/BaseIcon';
-import { SortT } from '../../hooks/useChangeSort';
+// import { OrderT } from '../../hooks/useChangeSort';
 
 type SortingProps = {
-  sortType: SortT;
   handleToggleSort: () => void;
   handleSortName: (sortName: number) => void;
 };
+
+const renderSorts = ['популярности', 'цене', 'алфавиту'];
 
 const Sorting = ({ handleToggleSort, handleSortName }: SortingProps) => {
   const { currentIndex, handleIndex } = useToggle(0);
@@ -23,9 +21,7 @@ const Sorting = ({ handleToggleSort, handleSortName }: SortingProps) => {
     setIsVisible(false);
   };
 
-  const currentSort = useMemo(() => sorts[currentIndex], [currentIndex]);
-
-  console.log();
+  const currentSort = useMemo(() => renderSorts[currentIndex], [currentIndex]);
 
   return (
     <div className="sort">
@@ -37,7 +33,7 @@ const Sorting = ({ handleToggleSort, handleSortName }: SortingProps) => {
       {isVisible && (
         <div className="sort__popup">
           <ul>
-            {sorts.map((el, i) => (
+            {renderSorts.map((el, i) => (
               <li
                 key={el}
                 onClick={() => handleClickItem(i)}

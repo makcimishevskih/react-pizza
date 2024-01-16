@@ -1,19 +1,15 @@
-import { useEffect, useState } from 'react';
-import useToggle from '../../hooks/useToggle';
+import { useAppSelector } from '../../redux/hooks';
+import { selectAllInfoCategories } from '../../redux/selectors';
 
 import Category from './component/Category';
 
-import cats from '../config';
+type CategoriesProps = {
+  currentIndex: number;
+  handleIndex: (n: number) => void;
+};
 
-const Categories = () => {
-  const [categories, setCategories] = useState<string[] | null>(null);
-
-  const { currentIndex, handleIndex } = useToggle(0);
-
-  useEffect(() => {
-    setCategories(cats);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const Categories = ({ currentIndex, handleIndex }: CategoriesProps) => {
+  const categories = useAppSelector(selectAllInfoCategories);
 
   return (
     <div className="categories">

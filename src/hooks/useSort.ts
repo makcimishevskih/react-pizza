@@ -1,31 +1,34 @@
-import { useMemo } from 'react';
-import { DBT, sortNamesObj } from '../components/config';
-import { compareValues } from '../helpers/compareValues';
-import { SortT } from './useChangeSort';
+import { useMemo, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
-export type Keys = Pick<DBT, 'rating' | 'price' | 'title'>;
+import { OrderT } from './useChangeSort';
+import { SortKeysT } from '../redux/slices/type';
+
+import { selectAllInfoPizzaNames, selectSortPizzas } from '../redux/selectors';
+import { thunks } from '../redux/thunks/thunks';
 
 export type PizzasProps = {
   sortIndex: number;
-  sortType: SortT;
+  orderType: OrderT;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useSort = <T extends Array<any>>(state: T, { sortType, sortIndex }: PizzasProps) => {
-  const currentSortEn = useMemo(() => sortNamesObj[sortIndex], [sortIndex]) as keyof Keys;
+const useSort = ({ orderType, sortIndex }: PizzasProps) => {
+  const sortNamePizzaKeys = useAppSelector(selectAllInfoPizzaNames);
+  const sortedPizzasState = useAppSelector(selectSortPizzas);
 
-  const sortedPizzesState =
-    state &&
-    (state
-      .slice()
-      .sort((a, b) =>
-        sortType === 'asc'
-          ? compareValues(a[currentSortEn], b[currentSortEn])
-          : compareValues(b[currentSortEn], a[currentSortEn]),
-      ) as T);
+  const currentSortEn = useMemo(
+    () => sortNamePizzaKeys[sortIndex],
+    [sortIndex, sortNamePizzaKeys],
+  ) as keyof SortKeysT;
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(thunks.getSortPizzas({ sortType: currentSortEn, orderType }));
+  }, [orderType, currentSortEn, dispatch]);
 
   return {
-    sortedPizzesState,
+    sortedPizzasState: sortedPizzasState.pizza,
   };
 };
 
